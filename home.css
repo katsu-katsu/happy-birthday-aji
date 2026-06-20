@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff0f5; 
+    font-family: sans-serif;
+    overflow: hidden;
+}
+
+#landing-area {
+    position: relative;
+    width: 1000px;
+    height: 600px;
+    background-image: url('bg.png'); /* ฉากหลังลายตาราง */
+    background-size: cover;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    
+    /* พระเอกของเรา สั่งให้แบ่งซ้ายขวา */
+    display: flex; 
+    align-items: center;
+}
+
+/* =========================================
+   โซนฝั่งซ้าย (ตัวละคร + โลโก้)
+   ========================================= */
+#left-section {
+    position: relative;
+    width: 60%; /* กินพื้นที่ 60% ของกรอบจอเกม */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#landing-character {
+    position: absolute;
+    top: 50px; 
+    height: 400px;
+    z-index: 1; 
+    cursor: pointer;
+    transition: transform 0.1s;
+    
+    /* เพิ่ม 2 บรรทัดนี้ เพื่อป้องกันเบราว์เซอร์กวนตอนคลิกรัวๆ */
+    user-select: none;
+    -webkit-user-drag: none; 
+}
+
+#landing-character:active {
+    transform: scale(0.95);
+}
+
+#landing-logo {
+    position: absolute;
+    bottom: 40px; 
+    width: 500px; /* ลดขนาดโลโก้นิดนึง จะได้พอดีกับฝั่งซ้าย */
+    z-index: 2; 
+    pointer-events: none; 
+    filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.2)); 
+    animation: floatAnimation 3s ease-in-out infinite;
+}
+
+/* =========================================
+   โซนฝั่งขวา (ปุ่ม Play & Exit)
+   ========================================= */
+#right-section {
+    width: 40%; /* กินพื้นที่ที่เหลืออีก 40% */
+    display: flex;
+    flex-direction: column; /* สั่งให้เรียงบน-ล่าง */
+    align-items: center;
+    justify-content: center;
+    gap: 30px; /* ระยะห่างระหว่าง 2 ปุ่ม */
+}
+
+/* เอฟเฟกต์ตกแต่งปุ่มทั้ง 2 อัน */
+.btn {
+    width: 400px; /* ขนาดของปุ่ม */
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    filter: drop-shadow(0px 6px 10px rgba(0,0,0,0.15)); /* เงาปุ่ม */
+}
+
+.btn:hover {
+    transform: scale(1.08); /* เอาเมาส์ชี้แล้วปุ่มขยายขึ้น */
+    filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.25)); /* เงามืดขึ้นตอนชี้ */
+}
+
+.btn:active {
+    transform: scale(0.95); /* กดปุ่มแล้วยุบตัวลง */
+}
+
+/* สร้างการเคลื่อนไหวแบบลอยขึ้น-ลงช้าๆ */
+@keyframes floatAnimation {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-12px); /* สั่งให้ลอยขึ้นข้างบน 12 พิกเซล */
+    }
+    100% {
+        transform: translateY(0px); /* กลับมาที่เดิม */
+    }
+}
+
+/* =========================================
+   โซนกล่องคำพูด (Chat Bubble)
+   ========================================= */
+#chat-bubble {
+    position: absolute;
+    top: 70px; /* ระดับความสูง ให้อยู่ระดับเดียวกับหัว */
+    left: 60%; /* ดันไปทางขวาของตัวละคร (ปรับตัวเลขตรงนี้ได้ถ้ารู้สึกว่าห่างไปหรือชิดไป) */
+    width: 130px; /* ขนาดของกล่องคำพูด */
+    z-index: 3; /* ให้อยู่หน้าสุด */
+    pointer-events: none; /* ป้องกันไม่ให้ไปบังการกดโดนตัวละคร */
+    
+    /* เอฟเฟกต์ลอยดึ๋งๆ เบาๆ */
+    animation: floatBubble 2s ease-in-out infinite; 
+}
+
+@keyframes floatBubble {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.page-exit {
+    animation: zoomOutToGame 0.8s forwards;
+    pointer-events: none; /* กดปุ่มซ้ำไม่ได้แล้ว */
+}
+
+@keyframes zoomOutToGame {
+    to {
+        opacity: 0;
+        transform: scale(1.2); /* ซูมภาพขยายขึ้น 20% */
+    }
+}

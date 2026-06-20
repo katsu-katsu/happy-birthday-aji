@@ -1,0 +1,280 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff0f5; 
+    font-family: sans-serif;
+    overflow: hidden;
+}
+
+#game-area {
+    position: relative;
+    width: 1000px;
+    height: 600px;
+    
+    /* 2 บรรทัดนี้คือส่วนที่เพิ่มเข้ามาใหม่ครับ */
+    background-image: url('bg.png'); /* ดึงรูป bg.png มาเป็นพื้นหลัง */
+    background-size: cover; /* สั่งให้รูปขยายเต็มกรอบ 1000x600 px พอดีเป๊ะ */
+    
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+    position: relative; 
+    /* overflow: hidden; */
+}
+
+#character {
+    position: absolute;
+    bottom: 85px; /* ขยับตัวละครหนีกล่องข้อความด้านล่าง */
+    left: 50px;
+    height: 380px; /* ปรับความสูงลงนิดนึงให้สมดุลกับพื้นที่ */
+    transition: transform 0.2s;
+}
+
+#dialogue-box {
+    font-family: 'DynaPuff', cursive;
+    position: absolute;
+    bottom: 25px; /* วางชิดขอบล่างของจอเกม */
+    left: 50%;
+    transform: translateX(-50%); /* จัดให้อยู่กึ่งกลางจอเป๊ะๆ */
+    width: 850px; /* ความกว้างกล่องแชท */
+    background-color: white; /* พื้นหลังสีขาว */
+    border: 6px solid #ffd1dc; /* ขอบหนาสีชมพูพาสเทล */
+    color: #8b6b70; /* สีตัวอักษรใช้โทนน้ำตาลอมชมพู จะดูละมุนกว่าสีดำล้วนครับ */
+    padding: 20px 30px;
+    border-radius: 20px; /* ขอบกล่องโค้งมน */
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.1); /* เพิ่มเงาให้กล่องเด้งมีมิติ */
+    z-index: 10;
+    text-align: center; /* ให้ข้อความอยู่ตรงกลาง */
+}
+
+/* ขยับชามผสมขึ้นมาให้อยู่ระดับเดียวกับตัวละคร */
+#bowl {
+    position: absolute;
+    bottom: 75px; /* ขยับชามขึ้นมา */
+    left: 390px;
+    height: 250px;
+    transition: transform 0.3s;
+}
+
+/* =========================================
+   โซนตู้เก็บของ
+   ========================================= */
+#cabinet-container {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    width: 380px;  /* ความกว้างของตู้ */
+    height: 300px; /* ความสูงของตู้ */
+}
+
+#cabinet-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1; /* ตู้ต้องอยู่ข้างหลัง (เลขน้อย) */
+}
+
+#ingredients-tray {
+    position: absolute;
+    top: 30px; /* ดันของลงมาให้ไม่เลยขอบบนตู้ */
+    left: 30px;
+    width: 320px;
+    height: 240px;
+    display: flex;
+    flex-wrap: wrap; /* ให้ของเรียงปัดตกบรรทัดใหม่ */
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 2; /* ของต้องอยู่ข้างหน้าตู้ (เลขมาก) */
+}
+
+.item {
+    height: 90px; /* ปรับขนาดของให้เล็กลงนิดนึงจะได้พอดีตู้ */
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+.item:hover {
+    transform: scale(1.1) translateY(-10px);
+}
+
+/* ตั้งค่าตำแหน่งไม้ตีแป้ง */
+#whisk {
+    position: absolute;
+    top: 200px;
+    left: 550px;
+    height: 150px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+    z-index: 5;
+}
+
+#whisk:hover {
+    transform: scale(1.1) rotate(15deg);
+}
+
+/* เอฟเฟกต์ชามสั่น ตอนคนส่วนผสม */
+.shake {
+    animation: shake-animation 0.5s infinite;
+}
+
+@keyframes shake-animation {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    25% { transform: translate(-2px, -2px) rotate(-2deg); }
+    50% { transform: translate(2px, 2px) rotate(2deg); }
+    75% { transform: translate(-2px, 1px) rotate(-1deg); }
+    100% { transform: translate(1px, -2px) rotate(1deg); }
+}
+
+.hidden {
+    visibility: hidden !important; /* ล่องหนแต่ยังกินพื้นที่เดิมไว้ */
+    opacity: 0; /* ทำให้โปร่งใส 100% */
+    pointer-events: none; /* ป้องกันไม่ให้เมาส์ไปเผลอกดโดนของที่ล่องหนอยู่ */
+}
+
+#curtain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* ให้ม่านกางเต็มความกว้าง 1000px พอดี */
+    z-index: 0; /* ให้อยู่หลังสุด (แต่ยังหน้ากำแพง bg.png) */
+    
+    /* พระเอกของเรา! สั่งทำเงาให้ม่านดูลอยแยกออกมาจากกำแพง */
+    filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.25)); 
+    
+    pointer-events: none; /* ป้องกันไม่ให้ตัวม่านไปบังการคลิกโดนของอื่นๆ */
+}
+
+/* =========================================
+   ฉากเตาอบ (Baking Scene)
+   ========================================= */
+#baking-scene {
+    display: none; /* ซ่อนไว้ก่อน จะเปิดใช้ตอนตีแป้งเสร็จ */
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20; /* ให้อยู่หน้าสุดทับฉากเก่า */
+}
+
+#floor-bg {
+    position: absolute;
+    bottom: 0; /* แปะชิดขอบล่าง */
+    left: 0;
+    width: 100%; /* กว้างเต็มกรอบเกม */
+    height: 300px; /* 👈 เพิ่มความหนาพื้นขึ้นนิดนึง จะได้โผล่พ้นกล่องแชท */
+    z-index: 21; /* 👈 บังคับให้ทับ BG ลายทางแน่นอน */
+}
+
+#char-full:active {
+    cursor: grabbing; /* เปลี่ยนรูปเมาส์ตอนกำลังกำมือ */
+}
+
+#char-full {
+    position: absolute;
+    bottom: 100px; /* 👈 ขยับขึ้นมาหนีกล่องข้อความแชท (ลองเพิ่ม/ลดเลขดูได้ครับ) */
+    left: 120px; /* 👈 ขยับให้ชิดขอบซ้ายในกรอบเกมกำลังดี */
+    height: 380px;
+    z-index: 22;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+#oven-full {
+    position: absolute;
+    bottom: 100px; /* 👈 ต้องตั้งให้เท่ากับตัวละคร จะได้เหยียบพื้นระดับเดียวกัน */
+    right: 120px; /* 👈 ขยับให้ชิดขอบขวาในกรอบเกม */
+    height: 300px;
+    z-index: 22;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+#drag-bowl {
+    position: absolute;
+    height: 120px; /* ขนาดชามตอนลาก */
+    z-index: 30; /* ลอยอยู่หน้าสุดเสมอ */
+    display: none; /* ซ่อนไว้ก่อน */
+    pointer-events: none; /* ทะลุการคลิก เพื่อให้ปล่อยลงเตาอบได้ */
+}
+
+/* =========================================
+   เอฟเฟกต์ไฟดับ (Lights Out)
+   ========================================= */
+#dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a; /* สีดำสนิทอมเทานิดๆ ให้พอดูละมุน */
+    z-index: 50; /* ให้อยู่หน้าสุด คลุมทุกอย่างในฉาก */
+    opacity: 0; /* ตอนแรกโปร่งใส 100% */
+    pointer-events: none; /* ตอนแรกให้เมาส์ทะลุได้ */
+    transition: opacity 1.5s ease-in-out; /* แอนิเมชันค่อยๆ มืดลงใน 1.5 วิ */
+}
+
+/* =========================================
+   ฉากเซอร์ไพรส์ (Surprise Scene)
+   ========================================= */
+#surprise-scene {
+    display: none; /* ซ่อนไว้ก่อน */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000; /* ทับความมืดทั้งหมด */
+    background-color: #fff;
+}
+
+#surprise-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#letter-item {
+    display: none; /* ซ่อนไว้รอเวลาโผล่ */
+    position: absolute;
+    top: 45%; /* ให้อยู่กลางจอค่อนไปทางบนนิดๆ หนีกล่องแชท */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; /* ขนาดจดหมาย (ปรับแก้ได้) */
+    cursor: pointer;
+    z-index: 100001;
+    transition: width 0.3s ease; /* แอนิเมชันตอนขยายจดหมาย */
+}
+
+/* แผ่นฟิล์มสำหรับเอฟเฟกต์ "ลืมตา" */
+#surprise-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 100005; /* ให้อยู่ทับเค้กและจดหมาย */
+    pointer-events: none;
+    opacity: 1; /* เริ่มต้นด้วยความมืดสนิท */
+    transition: opacity 2.5s ease-in-out; /* ค่อยๆ สว่างใน 2.5 วิ */
+}
+
+/* Class สำหรับสั่งให้สว่าง (ลืมตา) */
+#surprise-overlay.lights-on {
+    opacity: 0; /* เปลี่ยนเป็นโปร่งใส */
+}

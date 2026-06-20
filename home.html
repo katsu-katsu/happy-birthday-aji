@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Special Day!</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="landing-area">
+        <div id="left-section">
+            <img src="impress.png" id="landing-character" alt="Character">
+            <img src="chat_name.png" id="chat-bubble" alt="Chat Bubble">
+            <img src="logo.png" id="landing-logo" alt="Special Day Logo">
+        </div>
+
+        <div id="right-section">
+            <!-- 📍 แก้ไข: ลบแท็ก <a> ออก และใส่ onclick เรียกฟังก์ชัน startGame -->
+            <img src="play.png" class="btn" id="btn-play" alt="Play Button" onclick="startGame()" style="cursor: pointer;">
+            
+            <img src="exit.png" class="btn" id="btn-exit" alt="Exit Button" style="cursor: pointer;">
+        </div>
+    </div>
+
+    <!-- 📍 จัดระเบียบกล่องเสียง (ลบอันที่ซ้ำออก) -->
+    <audio id="bgm-player" loop>
+        <source src="01 - boba date.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="sfx-click" src="click.mp3"></audio>
+
+    <!-- 📍 สคริปต์ควบคุมหน้า Home ย้ายมาไว้ข้างใน <body> ให้ถูกต้อง -->
+    <script>
+        let isMusicPlaying = false;
+        const bgm = document.getElementById('bgm-player');
+
+        // 1. ระบบเล่นเพลง Background เมื่อคลิกหน้าจอครั้งแรก
+        document.addEventListener('click', () => {
+            if (!isMusicPlaying && bgm) {
+                bgm.volume = 0.4; 
+                bgm.play();
+                isMusicPlaying = true;
+            }
+        });
+
+        // 2. ระบบกดปุ่ม Play
+        function startGame() {
+            // เล่นเสียงกดปุ่ม
+            const clickSound = document.getElementById('sfx-click');
+            if (clickSound) {
+                clickSound.currentTime = 0;
+                clickSound.play();
+            }
+
+            // รอ 0.3 วินาทีให้เสียงดังจบ แล้วเปลี่ยนไปหน้า index.html
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 300); 
+        }
+    </script>
+
+    <!-- (ถ้าคุณมีโค้ดแอนิเมชันของหน้า Home ไว้ในนี้ ก็ให้โหลดไว้ท้ายสุดครับ) -->
+    <script src="home.js"></script> 
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a Cake for You!</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="game-area">
+        <img src="bg2.png" id="curtain" alt="Curtain">
+        <!-- ตัวละคร -->
+        <img src="default.png" id="character" alt="My Character">
+
+        <!-- กล่องข้อความ -->
+        <div id="dialogue-box">Can you help me put the ingredients in the bowl?</div>
+
+        <!-- ชามผสม (ชามเปล่า) -->
+        <img src="bowl.PNG" id="bowl" alt="Mixing Bowl">
+
+        <!-- โซนตู้เก็บของและวัตถุดิบ -->
+        <div id="cabinet-container">
+            <!-- รูปตู้เก็บของ (อยู่ด้านหลัง) -->
+            <img src="cabinet.png" id="cabinet-bg" alt="Cabinet">
+            
+            <!-- ถาดวัตถุดิบ (อยู่ด้านหน้าตู้) -->
+            <div id="ingredients-tray">
+                <img src="flour.PNG" class="item" id="item-flour" 
+                     onmouseover="changeExpression('talk.png', 'Grab the flour!')" 
+                     onmouseout="changeExpression('default.png', 'Can you help me put the ingredients in the bowl?')"
+                     onclick="putInBowl('item-flour')">
+                     
+                <img src="eggs.PNG" class="item" id="item-eggs" 
+                     onmouseover="changeExpression('talk.png', 'Here are the eggs!')" 
+                     onmouseout="changeExpression('default.png', 'Can you help me put the ingredients in the bowl?')"
+                     onclick="putInBowl('item-eggs')">
+
+                <img src="butter.PNG" class="item" id="item-butter" 
+                     onmouseover="changeExpression('talk.png', 'We need some butter!')" 
+                     onmouseout="changeExpression('default.png', 'Can you help me put the ingredients in the bowl?')"
+                     onclick="putInBowl('item-butter')">
+
+                <img src="sugar.PNG" class="item" id="item-sugar" 
+                     onmouseover="changeExpression('talk.png', 'Add some sweetness with sugar!')" 
+                     onmouseout="changeExpression('default.png', 'Can you help me put the ingredients in the bowl?')"
+                     onclick="putInBowl('item-sugar')">
+
+                <img src="milk.png" class="item" id="item-milk" 
+                     onmouseover="changeExpression('talk.png', 'Pour the milk!')" 
+                     onmouseout="changeExpression('default.png', 'Can you help me put the ingredients in the bowl?')"
+                     onclick="putInBowl('item-milk')">
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- โซนฉากที่ 2: ฉากเตาอบ (จะถูกซ่อนไว้ก่อนตอนแรก) -->
+        <!-- ========================================= -->
+        <div id="baking-scene">
+            <!-- พื้น -->
+            <img src="floor.png" id="floor-bg" alt="Floor">
+            
+            <!-- ตัวละคร (ค่าเริ่มต้นคือถือชาม) -->
+            <img src="holdingbowl.png" id="char-full" alt="Character Full">
+            
+            <!-- เตาอบ (ค่าเริ่มต้นคือเตาปิด) -->
+            <img src="oven.png" id="oven-full" alt="Oven">
+            
+            <!-- ชามผสมสำหรับตอนที่โดนลาก (ซ่อนไว้ก่อน) -->
+            <!-- *อย่าลืมเตรียมรูป mixbowl.png ไว้ในโฟลเดอร์ด้วยนะครับ* -->
+            <img src="mixbowl.png" id="drag-bowl" alt="Dragging Bowl">
+            
+            <div id="dark-overlay"></div>
+        </div>
+        
+        <div id="surprise-scene">
+            <img src="surprisecake.PNG" id="surprise-bg" alt="Surprise Cake">
+            
+            <img src="letter.PNG" id="letter-item" alt="Letter">
+            <div id="surprise-overlay"></div>
+        </div>
+
+        <!-- ไม้ตีแป้ง (ซ่อนไว้ก่อน) -->
+        <img src="whisk.PNG" id="whisk" class="hidden" alt="Whisk" onclick="mixIngredients()">
+    </div>
+
+
+    <audio id="bgm-player" loop>
+        <!-- 📍 ใส่ชื่อไฟล์ให้ตรงเป๊ะๆ ตามรูปของคุณเลยครับ -->
+        <source src="01 - boba date.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="sfx-click" src="click.mp3"></audio>
+    <audio id="sfx-pick" src="pickthings.mp3"></audio>
+    <audio id="sfx-done" src="cakedone.mp3"></audio>
+    <audio id="sfx-party" src="partyblower.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
